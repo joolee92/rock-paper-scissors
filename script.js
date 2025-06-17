@@ -1,6 +1,3 @@
-let humanScore = 0;
-let computerScore = 0;
-
 function getComputerChoice() {
     const randomInt = Math.random();
     if (randomInt < 0.33) return "rock";
@@ -14,51 +11,80 @@ function getHumanChoice() {
 
 function playRound(human, computer) {
     let hChoice = human.toLowerCase();
-    if (hChoice === computer) return `Draw: You both chose ${computer}.`;
+    if (hChoice === computer) {
+        console.log(`Draw: You both chose ${computer}.`)
+        return "draw";
+    } 
 
-    console.log(hChoice);
 
     if (hChoice === "rock") {
         switch(computer){
             case "paper":
-                computerScore++;
-                return "You lose! Paper beats rock!";
+                console.log("You lose! Paper beats rock!");
+                return "lose";
             case "scissors":
-                humanScore++;
-                return "You win! Rock beats scissors!";
+                console.log("You win! Rock beats scissors!");
+                return "win";
             default:
-                return "Draw! You both chose rock.";
+                console.log("Draw! You both chose rock.");
+                return "draw";
         }
     }
 
     else if (hChoice === "paper") {
         switch(computer){
             case "rock":
-                humanScore++;
-                return "You win! Paper beats rock!";
+                console.log("You win! Paper beats rock!");
+                return "win";
             case "scissors":
-                computerScore++;
-                return "You lose! Scissors beats paper!";
+                console.log("You lose! Scissors beats paper!");
+                return "lose";
             default:
-                return "Draw! You both chose paper.";
+                console.log("Draw! You both chose paper.");
+                return "draw";
         }
     }
 
     else {
         switch(computer){
             case "rock":
-                computerScore++;
-                return "You lose! Rock beats scissors!";
+                console.log("You lose! Rock beats scissors!");
+                return "lose";
             case "paper":
-                humanScore++;
-                return "You win! Scissors beats paper!";
+                console.log("You win! Scissors beats paper!");
+                return "win";
             default:
-                return "Draw! You both chose scissors";
+                console.log("Draw! You both chose scissors");
+                return "draw";
         }
     }
 
 }
 
-console.log(playRound(getHumanChoice(), getComputerChoice()));
-console.log("human score is " + humanScore);
-console.log("computer score is " +computerScore);
+function playGame() {
+    let humanScore = 0;
+    let computerScore = 0;
+    let roundCount = 0;
+    while (roundCount < 5) {
+        ++roundCount;
+        let c = getComputerChoice();
+        let h = getHumanChoice();
+
+        let currentRound = playRound(h, c);
+
+        if (currentRound != "draw") {
+            if (currentRound === "win") {
+                humanScore++;
+            }
+            else if (currentRound === "lose") {
+                computerScore++;
+            }
+        }
+    }
+
+    if (humanScore > computerScore) alert(`You win! \n Your score: ${humanScore} \n Computer's score: ${computerScore}`);
+    else if (humanScore < computerScore) alert(`You lose! \n Your score: ${humanScore} \n Computer's score: ${computerScore}`);
+    else if (humanScore === computerScore) alert(`It's a draw! \n Your score: ${humanScore} \n Computer's score: ${computerScore}`);
+}
+
+playGame();
