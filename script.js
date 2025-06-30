@@ -1,3 +1,45 @@
+const buttons = document.querySelectorAll('button');
+let playerScore = 0;
+let computerScore = 0;
+
+const score = document.querySelector('.score');
+score.textContent = "You: " + playerScore + " -- Computer: " + computerScore;
+
+buttons.forEach(button => {
+  button.addEventListener('click', () => {
+    const playerSelection = button.id;
+    const computerSelection = getComputerChoice();
+
+    const result = document.createElement("p");
+    const round = playRound(playerSelection, computerSelection)
+    result.innerText = round;
+
+    const results = document.querySelector(".results");
+    results.appendChild(result);
+
+    if(round.includes("win")) playerScore++;
+    if(round.includes("lose")) computerScore++;
+
+    if(playerScore === 5) {
+        alert("You win!");
+        playerScore = 0;
+        computerScore = 0;
+        results.innerHTML = '';
+    }
+
+    if(computerScore === 5) {
+        alert("You lose!");
+        playerScore = 0;
+        computerScore = 0;
+        results.innerHTML = '';
+    }
+
+    score.textContent = "You: " + playerScore + " -- Computer: " + computerScore;
+  });
+});
+
+
+
 function getComputerChoice() {
     const randomInt = Math.random();
     if (randomInt < 0.33) return "rock";
@@ -5,86 +47,44 @@ function getComputerChoice() {
     else return "scissors";
 }
 
-function getHumanChoice() {
-    return choice = prompt("Rock, Paper, or Scissors?");
-}
-
 function playRound(human, computer) {
     let hChoice = human.toLowerCase();
     if (hChoice === computer) {
-        console.log(`Draw: You both chose ${computer}.`)
-        return "draw";
+        return `Draw: You both chose ${computer}.`
     } 
 
 
     if (hChoice === "rock") {
         switch(computer){
             case "paper":
-                console.log("You lose! Paper beats rock!");
-                return "lose";
+                return "You lose! Paper beats rock!";
             case "scissors":
-                console.log("You win! Rock beats scissors!");
-                return "win";
+                return "You win! Rock beats scissors!";
             default:
-                console.log("Draw! You both chose rock.");
-                return "draw";
+                return "Draw! You both chose rock.";
         }
     }
 
     else if (hChoice === "paper") {
         switch(computer){
             case "rock":
-                console.log("You win! Paper beats rock!");
-                return "win";
+                return "You win! Paper beats rock!";
             case "scissors":
-                console.log("You lose! Scissors beats paper!");
-                return "lose";
+                return "You lose! Scissors beats paper!";
             default:
-                console.log("Draw! You both chose paper.");
-                return "draw";
+                return "Draw! You both chose paper.";
         }
     }
 
     else {
         switch(computer){
             case "rock":
-                console.log("You lose! Rock beats scissors!");
-                return "lose";
+                return "You lose! Rock beats scissors!";
             case "paper":
-                console.log("You win! Scissors beats paper!");
-                return "win";
+                return "You win! Scissors beats paper!";
             default:
-                console.log("Draw! You both chose scissors");
-                return "draw";
+                return "Draw! You both chose scissors";
         }
     }
 
 }
-
-function playGame() {
-    let humanScore = 0;
-    let computerScore = 0;
-    let roundCount = 0;
-    while (roundCount < 5) {
-        ++roundCount;
-        let c = getComputerChoice();
-        let h = getHumanChoice();
-
-        let currentRound = playRound(h, c);
-
-        if (currentRound != "draw") {
-            if (currentRound === "win") {
-                humanScore++;
-            }
-            else if (currentRound === "lose") {
-                computerScore++;
-            }
-        }
-    }
-
-    if (humanScore > computerScore) alert(`You win! \n Your score: ${humanScore} \n Computer's score: ${computerScore}`);
-    else if (humanScore < computerScore) alert(`You lose! \n Your score: ${humanScore} \n Computer's score: ${computerScore}`);
-    else if (humanScore === computerScore) alert(`It's a draw! \n Your score: ${humanScore} \n Computer's score: ${computerScore}`);
-}
-
-playGame();
